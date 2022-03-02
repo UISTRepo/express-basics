@@ -1,7 +1,35 @@
 <%- include('partials/header') %>
 
-<div>
-    <h2>Hello</h2>
+<div class="row">
+    <div class="offset-md-2 col-md-8 text-center">
+        <h3>
+            List of Movies to be reviewed in 2022
+        </h3>
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-sm btn-outline-primary">+ Add</button>
+    </div>
+</div>
+<div class="movies-list">
+
+    <% for(var i = 0; i < movies.length; i++) {%>
+
+    <div class="row movie-item">
+        <div class="col-md-3 thumbnail">
+            <img src="https://place-hold.it/500">
+        </div>
+        <div class="col-md-8 details">
+            <h4>
+                <a href="/movies/<%- movies[i].id%>"><%- movies[i].title%></a>
+            </h4>
+            <h6><%- movies[i].actor%></h6>
+            <div>
+                <small><%- movies[i].time%></small>
+            </div>
+        </div>
+    </div>
+
+    <% } %>
 </div>
 
 <%- include('partials/footer') %>
