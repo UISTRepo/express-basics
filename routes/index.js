@@ -42,7 +42,45 @@ router.get('/about', function(req, res, next) {
 router.get('/contact', function(req, res, next) {
     res.render('contact', {
         title: 'Contact Us',
-        currentPage: 'contact'
+        currentPage: 'contact',
+        formData: {}
+    });
+});
+
+router.post('/contact', function(req, res, next) {
+
+    let name = req.body.name;
+    let email = req.body.email;
+    let question = req.body.question;
+
+    // email is not validated
+
+    if(!name || name.length < 6){
+        res.status(403);
+
+        res.render('contact', {
+            title: 'Contact Us',
+            currentPage: 'contact',
+            formData: {
+                name: {
+                    valid: false,
+                    value: name,
+                    error: 'Enter a valid name'
+                }
+            }
+        });
+    }
+
+    // the Q is not validated
+
+    // TODO: store the data in the DB
+
+    res.render('contact', {
+        title: 'Contact Us',
+        currentPage: 'contact',
+        formData: {
+            submitted: true
+        },
     });
 });
 
