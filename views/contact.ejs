@@ -4,34 +4,49 @@
     <form action="/contact" method="post">
         <div class="form-group mb-2">
             <label for="email">Email address</label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="Enter Your Email">
+            <input type="email" class="form-control" name="email"
+            <% if(formData.email && formData.email.value) { %>
+                   value="<%- formData.email.value%>"
+                    <% } %>
+                   id="email" placeholder="Enter Your Email">
+            <% if(formData.email && !formData.email.valid) { %>
+                <div class="text-danger mt-1 ms-2">
+                    <small><%- formData.email.errorMsg%></small>
+                </div>
+            <% } %>
         </div>
         <div class="form-group mb-2">
             <label for="name">Your first name</label>
             <input type="text" class="form-control" name="name" id="name"
-                   <% if(formData.name && formData.name.value) { %>
-                    value="<%- formData.name.value%>"
-                   <% } %>
+            <% if(formData.name && formData.name.value) { %>
+                   value="<%- formData.name.value%>"
+                    <% } %>
                    placeholder="First Name">
             <% if(formData.name && !formData.name.valid) { %>
                 <div class="text-danger mt-1 ms-2">
-                    <small><%- formData.name.error%></small>
+                    <small><%- formData.name.errorMsg%></small>
                 </div>
             <% } %>
         </div>
         <div class="form-group mb-2">
             <label for="question">Question</label>
-            <textarea class="form-control" name="question" id="question" rows="3"></textarea>
+            <textarea class="form-control" name="question"
+                      id="question" rows="3"><% if(formData.question && formData.question.value) { %><%- formData.question.value%><% } %></textarea>
+            <% if(formData.question && !formData.question.valid) { %>
+                <div class="text-danger mt-1 ms-2">
+                    <small><%- formData.question.errorMsg%></small>
+                </div>
+            <% } %>
         </div>
         <div class="text-end">
             <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 
-    <% if(formData.submitted) {%>
+    <% if(formData.valid) {%>
 
         <div class="text-success">
-           <h5>Your question is submitted!</h5>
+            <h5>Your question is submitted!</h5>
         </div>
 
     <% }%>

@@ -43,45 +43,76 @@ router.get('/contact', function(req, res, next) {
     res.render('contact', {
         title: 'Contact Us',
         currentPage: 'contact',
-        formData: {}
+        formData: []
     });
 });
 
 router.post('/contact', function(req, res, next) {
 
-    let name = req.body.name;
-    let email = req.body.email;
-    let question = req.body.question;
+    let formData = validateAndCreateContactFormData(req.body);
 
-    // email is not validated
-
-    if(!name || name.length < 6){
-        res.status(403);
-
-        res.render('contact', {
-            title: 'Contact Us',
-            currentPage: 'contact',
-            formData: {
-                name: {
-                    valid: false,
-                    value: name,
-                    error: 'Enter a valid name'
-                }
-            }
-        });
-    }
-
-    // the Q is not validated
+    !formData.valid ? res.status(403) : formData = {};
 
     // TODO: store the data in the DB
 
     res.render('contact', {
         title: 'Contact Us',
         currentPage: 'contact',
-        formData: {
-            submitted: true
-        },
+        formData: formData
     });
 });
 
 module.exports = router;
+
+function validateAndCreateContactFormData(body){
+
+    let name = body.name;
+    let email = body.email;
+    let question = body.question;
+
+    let formData = {
+        valid: true,
+        email: {
+            value: email
+        },
+        name: {
+            value: name
+        },
+        question: {
+            value: question
+        }
+    };
+
+    let pattern = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
+
+    if(!pattern.test(email)) {
+        formData.email = {
+            valid: false,
+            errorMsg: 'Enter a valid email'
+        };
+
+        formData.valid = false;
+    }
+
+    if(!name || name.length < 2){
+        formData.name = {
+            valid: false,
+            errorMsg: 'Enter a valid name'
+        }
+
+        formData.valid = false;
+    }
+
+    if(!question || question.length < 10){
+        formData.question = {
+            valid: false,
+            errorMsg: 'Enter a valid name'
+        }
+
+
+        formData.valid = false;
+    }
+
+    return formData;
+}
+
