@@ -2,33 +2,37 @@ var express = require('express');
 var router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get('/', async function(req, res, next) {
 
-    let movies = [
-        {
-            id: 1,
-            title: 'Movie 1',
-            actor: 'Actor 1',
-            time: 'Time 1'
-        },
-        {
-            id: 2,
-            title: 'Movie 2',
-            actor: 'Actor 2',
-            time: 'Time 2'
-        },
-        {
-            id: 3,
-            title: 'Movie 3',
-            actor: 'Actor 3',
-            time: 'Time 3'
-        }
-    ];
+    console.log('A');
+
+    var mysql = require('mysql');
+
+    const config = {
+        host: 'localhost',
+        user: 'root',
+        // port: 8889,
+        password: '',
+        database: 'ip_express_basics'
+    }
+
+    var connection = mysql.createConnection(config);
+    let err = await connection.connect();
+
+    if (err){
+        console.log('error connecting:' + err.stack);
+    }
+
+    console.log('Y');
+
+    connection.end();
+
+    console.log('B');
 
     res.render('index', {
         title: 'Movies',
         currentPage: 'home',
-        movies: movies
+        movies: []
     });
 });
 
