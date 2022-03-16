@@ -1,42 +1,33 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+var moviesService = require('../services/movies');
+
 router.get('/', async function(req, res, next) {
 
-    console.log('A');
+    try{
+        let movies = await moviesService.getAllMovies();
 
-    var mysql = require('mysql');
+        // todo: Fetch the movie actors
+        // todo: reorganize the raw data
 
-    const config = {
-        host: 'localhost',
-        user: 'root',
-        // port: 8889,
-        password: '',
-        database: 'ip_express_basics'
+        res.render('index', {
+            title: 'Movies',
+            currentPage: 'home',
+            movies: movies
+        });
+
+    }
+    catch (e){
+        console.log(e);
     }
 
-    var connection = mysql.createConnection(config);
-    let err = await connection.connect();
-
-    if (err){
-        console.log('error connecting:' + err.stack);
-    }
-
-    console.log('Y');
-
-    connection.end();
-
-    console.log('B');
-
-    res.render('index', {
-        title: 'Movies',
-        currentPage: 'home',
-        movies: []
-    });
 });
 
 router.get('/about', function(req, res, next) {
+
+    // another db connection
+
     res.render('about', {
         title: 'About Us',
         currentPage: 'about'
