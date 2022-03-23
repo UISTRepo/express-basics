@@ -1,0 +1,21 @@
+<%- include('partials/header') %>
+
+<div>
+    <h3><%- movie.title%></h3>
+    <div>
+        The poster img
+    </div>
+    <div>
+
+    </div>
+    <ul>
+        <%for(let i = 0; i < movie.actors.length; i++) {%>
+        <li><%- movie.actors[i].name%></li>
+        <% }%>
+    </ul>
+    <p>
+        Time
+    </p>
+</div>
+
+<%- include('partials/footer') %>

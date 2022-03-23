@@ -4,30 +4,10 @@ var router = express.Router();
 var moviesService = require('../services/movies');
 
 router.get('/', async function(req, res, next) {
-
-    try{
-        let movies = await moviesService.getAllMovies();
-
-        // todo: Fetch the movie actors
-        // todo: reorganize the raw data
-
-        res.render('index', {
-            title: 'Movies',
-            currentPage: 'home',
-            movies: movies
-        });
-
-    }
-    catch (e){
-        console.log(e);
-    }
-
+    res.redirect('/movies');
 });
 
 router.get('/about', function(req, res, next) {
-
-    // another db connection
-
     res.render('about', {
         title: 'About Us',
         currentPage: 'about'
