@@ -1,0 +1,42 @@
+<%- include('partials/header') %>
+<div class="row">
+    <div class="col-lg-12 offset-xl-2 col-sl-8 offset-xxl-3 col-xxl-6">
+
+        <h4>Add a new movie</h4>
+
+        <form method="post" action="/movies">
+            <div class="form-floating mb-2">
+                <input id="title" class="form-control" type="text"
+                <% if(formData.title && formData.title.value) { %>
+                       value="<%- formData.title.value%>"
+                        <% } %>
+
+                       name="title" placeholder="Enter the title">
+                <label for="title">Enter the title</label>
+            </div>
+            <% if(formData.title && !formData.title.valid) { %>
+                <div class="text-danger mt-1 ms-2">
+                    <small><%- formData.title.errorMsg%></small>
+                </div>
+            <% } %>
+            <div class="form-floating mb-2">
+                <input id="duration" class="form-control" type="number"
+                <% if(formData.length && formData.length.value) { %>
+                       value="<%- formData.length.value%>"
+                        <% } %>
+                       name="length" placeholder="Enter the duration">
+                <label for="duration">Duration in minutes</label>
+            </div>
+            <% if(formData.length && !formData.length.valid) { %>
+                <div class="text-danger mt-1 ms-2">
+                    <small><%- formData.length.errorMsg%></small>
+                </div>
+            <% } %>
+            <div class="text-center">
+                <button class="btn btn-primary" type="submit">Store</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+<%- include('partials/footer') %>
