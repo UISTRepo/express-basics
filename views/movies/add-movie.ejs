@@ -32,6 +32,20 @@
                     <small><%- formData.length.errorMsg%></small>
                 </div>
             <% } %>
+            <% for(var i = 0; i < actors.length; i++) { %>
+                <div class="form-check">
+                    <input class="form-check-input" name="actors" value="<%- actors[i].id%>" type="checkbox" id="actor_<%- actors[i].id%>">
+                    <label class="form-check-label" for="actor_<%- actors[i].id%>">
+                        <%- actors[i].name%>
+                    </label>
+                </div>
+            <% } %>
+
+            <% if(formData.actors && !formData.actors.valid) { %>
+                <div class="text-danger mt-1 ms-2">
+                    <small><%- formData.actors.errorMsg%></small>
+                </div>
+            <% } %>
             <div class="text-center">
                 <button class="btn btn-primary" type="submit">Store</button>
             </div>

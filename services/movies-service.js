@@ -58,10 +58,64 @@ storeNew = (input) =>{
     });
 };
 
+getAllActors = () =>{
+    return new Promise((resolve, reject) => {
+        connection.query('SELECT * FROM actors ',  (error, elements)=>{
+            if(error){
+                return reject(error);
+            }
+            return resolve(elements);
+        });
+    });
+};
+
+addActorToMovie = (input) =>{
+    return new Promise((resolve, reject) => {
+        let sql = "INSERT INTO actors_movies (actor_id, movie_id) VALUES (" + input.actor_id + ", " + input.movie_id + ")";
+
+        connection.query(sql,  (error, movie)=>{
+            if(error){
+                return reject(error);
+            }
+            return resolve(movie);
+        });
+    });
+};
+
+deleteById = (id) =>{
+    return new Promise((resolve, reject) => {
+        let sql = "DELETE FROM movies WHERE id = " + id;
+
+        connection.query(sql, (error, movie)=> {
+            if(error){
+                return reject(error);
+            }
+            return resolve(movie);
+        });
+    });
+};
+
+cleanUp = (id) =>{
+    return new Promise((resolve, reject) => {
+        let sql = "DELETE FROM actors_movies WHERE movie_id = " + id;
+
+        connection.query(sql,  (error, movie)=>{
+            if(error){
+                return reject(error);
+            }
+            return resolve(movie);
+        });
+    });
+};
+
 module.exports = {
     getAll,
     getById,
     getActorIds,
     getActorById,
-    storeNew
+    storeNew,
+    getAllActors,
+    addActorToMovie,
+    deleteById,
+    cleanUp
 }

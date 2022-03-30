@@ -28,6 +28,11 @@
                     <p class="card-text"><%- movies[i].actor%></p>
                     <p class="card-text"><small class="text-muted"><%- movies[i].time%></small></p>
                 </div>
+                <div class="p-1 text-end">
+                    <form method="post" action="/movies/deleteMovie/<%- movies[i].id%>">
+                        <button class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
             </div>
         </div>
 

@@ -62,6 +62,20 @@ exports.show = async function(req, res, next) {
 
         movie.actors = actors;
 
+        let length = movie.length;
+
+        const hours = Math.round(length / 60);
+        let minutes = (length % 60).toString();
+
+        if(Number(minutes) < 10){
+            minutes = '0' + minutes;
+        }
+
+        const fullTime = hours + ':' + minutes;
+
+        movie.fullTime = fullTime;
+
+
         res.render('movie', {
             title: 'Movies',
             currentPage: 'home',
@@ -75,14 +89,17 @@ exports.show = async function(req, res, next) {
 
 }
 
-exports.new = function (req, res, next) {
+exports.new = async function (req, res, next) {
 
     let formData = {};
+
+    let actors = await moviesService.getAllActors();
 
     res.render('add-movie', {
         title: 'Add Movie',
         currentPage: 'home',
-        formData: formData
+        formData: formData,
+        actors: actors
     })
 }
 
@@ -101,21 +118,38 @@ exports.store = async function (req, res, next) {
 
         console.log(movie);
 
-        // todo: store the actor ids in the actors_movies table
-    }
+        let submittedActorIds = req.body.actors;
 
-    res.render('add-movie', {
-        title: 'Add Movie',
-        currentPage: 'home',
-        formData: formData
-    })
+        submittedActorIds.forEach(actor_id => {
+            const input = {
+                movie_id: movie.insertId,
+                actor_id: Number(actor_id)
+            }
+
+            moviesService.addActorToMovie(input);
+
+            console.log(input);
+        })
+
+        res.redirect('/movies');
+    }
+    else{
+        let actors = await moviesService.getAllActors();
+
+        res.render('add-movie', {
+            title: 'Add Movie',
+            currentPage: 'home',
+            formData,
+            actors
+        })
+    }
 
 }
 
 function validateAndCreateMovieFormData(body){
 
     let title = body.title;
-    let actorIds = body.actorIds;
+    let actors = body.actors;
     let length = body.length;
 
     let formData = {
@@ -148,6 +182,16 @@ function validateAndCreateMovieFormData(body){
         formData.valid = false;
     }
 
+    if(!actors || !actors.length){
+        formData.actors = {
+            value: actors,
+            valid: false,
+            errorMsg: 'Check at least one actor'
+        }
+
+        formData.valid = false;
+    }
+
     return formData;
 }
 
@@ -155,6 +199,18 @@ exports.update = async function (req, res, next) {
 
 
 }
+
+exports.destroy = async function (req, res, next) {
+
+    let id = req.params.id;
+
+    moviesService.deleteById(id);
+    moviesService.cleanUp(id);
+
+    res.redirect('/');
+
+}
+
 
 
 
